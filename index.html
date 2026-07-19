@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Прайс‑лист | Лэшмейкер</title>
+    <!-- Подключаем шрифты Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Montserrat:wght@300;500;600&display=swap" rel="stylesheet" />
+    <style>
+        /* Сброс и базовые стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f5ebe6; /* нейтральный фон вокруг карточки */
+            font-family: 'Montserrat', sans-serif;
+            padding: 16px;
+        }
+
+        /* Основная карточка – точно под iPhone (390px) */
+        .price-card {
+            width: 390px;
+            max-width: 100%;
+            background: #ffffff;
+            border-radius: 40px 40px 32px 32px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.06);
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        /* Фоновое изображение – стильное, с затемнением */
+        .price-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(135deg, rgba(45, 20, 30, 0.35) 0%, rgba(20, 10, 15, 0.10) 80%),
+                url('https://images.unsplash.com/photo-1602233158242-3ba0ac4d2167?w=800&auto=format&fit=crop') center center / cover no-repeat;
+            background-blend-mode: overlay;
+            opacity: 0.9;
+            z-index: 0;
+        }
+
+        /* Содержимое поверх фона */
+        .card-content {
+            position: relative;
+            z-index: 1;
+            padding: 40px 28px 36px;
+            backdrop-filter: blur(2px); /* лёгкая дымка для читаемости */
+            background: rgba(255, 255, 255, 0.78);
+            border-radius: inherit;
+        }
+
+        /* Заголовок */
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            font-size: 32px;
+            letter-spacing: -0.5px;
+            color: #2c1a1a;
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+        .title span {
+            font-style: italic;
+            font-weight: 400;
+            color: #b25d6c;
+        }
+
+        .subhead {
+            font-size: 13px;
+            font-weight: 300;
+            color: #4a3a3a;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 22px;
+            border-bottom: 2px solid rgba(178, 93, 108, 0.25);
+            padding-bottom: 12px;
+            display: inline-block;
+        }
+
+        /* Список услуг */
+        .service-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 8px 0;
+            border-bottom: 1px dashed rgba(44, 26, 26, 0.08);
+            font-size: 16px;
+            font-weight: 500;
+            color: #2c1a1a;
+        }
+        .service-item:last-of-type {
+            border-bottom: none;
+        }
+
+        .service-name {
+            font-weight: 400;
+            font-size: 15px;
+            letter-spacing: 0.2px;
+            padding-right: 12px;
+        }
+        .service-name .highlight {
+            background: linear-gradient(120deg, rgba(178, 93, 108, 0.12) 0%, rgba(178, 93, 108, 0.12) 40%, transparent 80%);
+            padding: 0 4px;
+            font-weight: 500;
+        }
+        .service-price {
+            font-weight: 600;
+            font-size: 17px;
+            color: #b25d6c;
+            white-space: nowrap;
+            font-feature-settings: "tnum";
+        }
+        .service-price small {
+            font-size: 13px;
+            font-weight: 300;
+            color: #7a5a5a;
+            margin-left: 2px;
+        }
+
+        /* Особый стиль для бесплатного снятия */
+        .service-free .service-price {
+            color: #4a7a5c;
+            font-weight: 500;
+        }
+        .service-free .service-price small {
+            color: #4a7a5c;
+        }
+
+        /* Декоративный элемент */
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #b25d6c, #d4a0ac);
+            border-radius: 4px;
+            margin: 18px 0 14px;
+        }
+
+        /* Футер с контактом */
+        .footer-note {
+            margin-top: 24px;
+            font-size: 12px;
+            font-weight: 300;
+            color: #5a4a4a;
+            letter-spacing: 0.5px;
+            text-align: center;
+            border-top: 1px solid rgba(178, 93, 108, 0.15);
+            padding-top: 16px;
+        }
+        .footer-note strong {
+            font-weight: 500;
+            color: #2c1a1a;
+        }
+        .footer-note .emoji {
+            font-size: 16px;
+        }
+
+        /* Адаптивность для маленьких экранов */
+        @media (max-width: 420px) {
+            .price-card {
+                width: 100%;
+                border-radius: 28px;
+            }
+            .card-content {
+                padding: 28px 20px 28px;
+            }
+            .title {
+                font-size: 28px;
+            }
+            .service-item {
+                font-size: 14px;
+                padding: 6px 0;
+            }
+            .service-price {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="price-card">
+        <div class="card-content">
+            <!-- Заголовок -->
+            <h1 class="title">Прайс<span>‑лист</span></h1>
+            <div class="subhead">наращивание ресниц</div>
+
+            <!-- Услуги – структура по вашему списку -->
+            <div class="service-item">
+                <span class="service-name">Классическое <span class="highlight">наращивание</span></span>
+                <span class="service-price">от 1 600 ₽</span>
+            </div>
+            <div class="service-item">
+                <span class="service-name">Наращивание 2D</span>
+                <span class="service-price">1 800 ₽</span>
+            </div>
+            <div class="service-item">
+                <span class="service-name">Наращивание 3D</span>
+                <span class="service-price">2 000 ₽</span>
+            </div>
+            <div class="service-item">
+                <span class="service-name">Наращивание 4D</span>
+                <span class="service-price">2 200 ₽</span>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Дополнительные услуги -->
+            <div class="service-item">
+                <span class="service-name">Дизайн «Лучики»</span>
+                <span class="service-price">+ 300 ₽</span>
+            </div>
+            <div class="service-item service-free">
+                <span class="service-name">Снятие наращённых ресниц</span>
+                <span class="service-price">Бесплатно <small>✨</small></span>
+            </div>
+
+            <!-- Футер -->
+            <div class="footer-note">
+                <span class="emoji">📩</span> Актуальные цены и запись — в <strong>Direct</strong>
+                <br />или по ссылке в профиле
+            </div>
+        </div>
+    </div>
+</body>
+</html>
